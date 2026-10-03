@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hasan Cash Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4f8;--white:#fff;--surface:#f8fafc;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--text2:#334155;--muted:#64748b;--muted2:#94a3b8;
+  --green:#059669;--green-bg:#ecfdf5;--green-bd:#a7f3d0;
+  --red:#dc2626;--red-bg:#fef2f2;--red-bd:#fecaca;
+  --blue:#1d4ed8;--blue-bg:#eff6ff;
+  --amber:#d97706;--amber-bg:#fffbeb;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.04);
+  --r:12px;--rs:8px;
+}
+html{font-size:15px;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* HEADER */
+header{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:50;box-shadow:var(--sh);}
+.hd{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#1d4ed8,#0891b2);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(29,78,216,.3);}
+.brand-name{font-size:16px;font-weight:800;letter-spacing:-.3px;}
+.brand-name span{color:#1d4ed8;}
+.brand-sub{font-size:11px;color:var(--muted);font-weight:500;}
+.hdr{display:flex;align-items:center;gap:10px;}
+.date-badge{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted2);background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:6px;}
+.dnav{display:flex;align-items:center;gap:6px;}
+.nb{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;color:var(--muted);}
+.nb:hover{background:var(--surface);color:var(--text);}
+#dl{font-size:13px;font-weight:600;min-width:130px;text-align:center;}
+.pbtn{padding:8px 14px;border-radius:var(--rs);border:1px solid var(--border);background:var(--white);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.pbtn:hover{background:var(--surface);color:var(--text);}
+
+/* MAIN */
+main{max-width:1100px;margin:0 auto;padding:24px 24px 60px;}
+
+/* SUMMARY */
+.srow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.sc{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh);position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;}
+.sc:hover{transform:translateY(-1px);box-shadow:var(--sh2);}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sc.si::before{background:var(--green);}
+.sc.se::before{background:var(--red);}
+.sc.sp::before{background:var(--blue);}
+.sc.sb::before{background:var(--amber);}
+.sl{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.si-ic{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.sa{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;letter-spacing:-.5px;line-height:1;margin-bottom:4px;}
+.sc.si .sa{color:var(--green);}
+.sc.se .sa{color:var(--red);}
+.sc.sp .sa{color:var(--blue);}
+.sc.sb .sa{color:var(--amber);}
+.sn{font-size:12px;color:var(--muted2);}
+
+/* LAYOUT */
+.tcol{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
+
+/* PANEL */
+.panel{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:18px;}
+.ph{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pt{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.ptd{width:8px;height:8px;border-radius:50%;}
+.pbadge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--surface);color:var(--muted);border:1px solid var(--border);}
+
+/* FILTER TABS */
+.ftabs{display:flex;gap:0;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface);}
+.ftab{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--muted);border:none;background:transparent;font-family:'Inter',sans-serif;}
+.ftab.active{background:var(--white);color:var(--text);box-shadow:var(--sh);}
+.ftab.fai.active{color:var(--green);}
+.ftab.fae.active{color:var(--red);}
+
+/* TXN LIST */
+.tlist{max-height:440px;overflow-y:auto;}
+.tlist::-webkit-scrollbar{width:4px;}
+.tlist::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.te{padding:48px 20px;text-align:center;color:var(--muted2);font-size:13px;}
+.te .ei{font-size:32px;margin-bottom:10px;}
+.ti{display:flex;align-items:center;gap:12px;padding:13px 20px;border-bottom:1px solid var(--border);transition:background .1s;}
+.ti:last-child{border-bottom:none;}
+.ti:hover{background:var(--surface);}
+.td{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.td.ii{background:var(--green-bg);}
+.td.ie{background:var(--red-bg);}
+.tinfo{flex:1;min-width:0;}
+.tname{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tmeta{font-size:11px;color:var(--muted2);margin-top:2px;display:flex;gap:8px;align-items:center;}
+.tcat{padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.tcat.ci{background:var(--green-bg);color:var(--green);}
+.tcat.ce{background:var(--red-bg);color:var(--red);}
+.tam{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;flex-shrink:0;}
+.tam.ai{color:var(--green);}
+.tam.ae{color:var(--red);}
+.tdel{width:26px;height:26px;border-radius:5px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted2);transition:all .15s;flex-shrink:0;opacity:0;}
+.ti:hover .tdel{opacity:1;}
+.tdel:hover{background:var(--red-bg);color:var(--red);}
+
+/* CHART */
+.cpanel{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:18px;}
+.ci{padding:18px 20px;}
+.bc{display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:14px;}
+.bar{flex:1;border-radius:4px 4px 0 0;min-height:3px;transition:height .4s ease;}
+.bar.ib{background:linear-gradient(180deg,#10b981,#059669);}
+.bar.eb{background:linear-gradient(180deg,#f87171,#dc2626);}
+.bl{font-size:10px;color:var(--muted2);text-align:center;margin-top:5px;}
+.cleg{display:flex;gap:16px;margin-top:10px;}
+.cli{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+.cld{width:10px;height:10px;border-radius:3px;}
+
+/* REPORT TABLE */
+.rtbl{width:100%;border-collapse:collapse;}
+.rtbl th{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);background:var(--surface);border-bottom:1px solid var(--border);text-align:left;}
+.rtbl td{padding:12px 20px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border);}
+.rtbl tr:last-child td{border-bottom:none;}
+.rtbl tr:hover td{background:var(--surface);}
+.rtbl td:last-child{font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right;}
+.rgi{color:var(--green);}
+.rge{color:var(--red);}
+.rgp{color:var(--blue);}
+.rtbl tfoot td{font-weight:700;background:var(--surface);border-top:2px solid var(--border2);}
+
+/* ADD FORM */
+.aform{padding:20px;}
+.fsect{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.fsect::after{content:'';flex:1;height:1px;background:var(--border);}
+.ttog{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;}
+.tbtn{padding:10px;border-radius:var(--rs);border:1.5px solid var(--border);background:var(--surface);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;}
+.tbtn.ai{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+.tbtn.ae{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rs);font-family:'Inter',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.1);}
+.afield{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;letter-spacing:-.5px;padding:10px 12px;}
+.adis{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2);margin-top:4px;min-height:16px;}
+.field textarea{resize:none;height:58px;}
+.cpicks{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.cpick{padding:4px 9px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .15s;}
+.cpick:hover{border-color:var(--border2);color:var(--text);}
+.sbtn{width:100%;padding:12px;border-radius:var(--rs);border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.sbtn.si{background:#059669;color:#fff;}
+.sbtn.si:hover{background:#047857;box-shadow:0 4px 12px rgba(5,150,105,.3);}
+.sbtn.se{background:#dc2626;color:#fff;}
+.sbtn.se:hover{background:#b91c1c;box-shadow:0 4px 12px rgba(220,38,38,.3);}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;z-index:1000;background:var(--text);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);transform:translateY(100px);opacity:0;transition:all .3s ease;display:flex;align-items:center;gap:8px;}
+#toast.show{transform:translateY(0);opacity:1;}
+#toast.g{background:#059669;}
+#toast.r{background:#dc2626;}
+
+/* RESPONSIVE */
+@media(max-width:900px){.srow{grid-template-columns:repeat(2,1fr);}.tcol{grid-template-columns:1fr;}}
+@media(max-width:600px){main{padding:14px 12px 60px;}.srow{grid-template-columns:1fr 1fr;}.sa{font-size:17px;}header{padding:0 12px;}}
+@media print{header,#addcol,#toast,.pbtn,.ftabs,.tdel{display:none!important;}body{background:#fff;}.panel,.cpanel{box-shadow:none;border:1px solid #ddd;}.tcol{grid-template-columns:1fr;}main{padding:0;}}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<header>
+  <div class="hd">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div>
+        <div class="brand-name"><span>Hasan</span> Cash Report</div>
+        <div class="brand-sub">Store Financial Manager</div>
+      </div>
+    </div>
+    <div class="hdr">
+      <div class="dnav">
+        <button class="nb" onclick="chDay(-1)" title="Previous">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div id="dl"></div>
+        <button class="nb" onclick="chDay(1)" title="Next">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="date-badge" id="dbadge"></div>
+      <button class="pbtn" onclick="window.print()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+        Print
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="srow">
+    <div class="sc si">
+      <div class="sl"><div class="si-ic" style="background:var(--green-bg)">📈</div>Total Income</div>
+      <div class="sa" id="TI">৳0.00</div>
+      <div class="sn" id="IC">0 transactions</div>
+    </div>
+    <div class="sc se">
+      <div class="sl"><div class="si-ic" style="background:var(--red-bg)">📉</div>Total Expense</div>
+      <div class="sa" id="TE">৳0.00</div>
+      <div class="sn" id="EC">0 transactions</div>
+    </div>
+    <div class="sc sp">
+      <div class="sl"><div class="si-ic" style="background:var(--blue-bg)">💰</div>Net Profit</div>
+      <div class="sa" id="NP">৳0.00</div>
+      <div class="sn" id="PN">Income − Expense</div>
+    </div>
+    <div class="sc sb">
+      <div class="sl"><div class="si-ic" style="background:var(--amber-bg)">🏦</div>Cash Balance</div>
+      <div class="sa" id="CB">৳0.00</div>
+      <div class="sn" id="BN">Available cash</div>
+    </div>
+  </div>
+
+  <div class="tcol">
+    <div>
+      <!-- Chart -->
+      <div class="cpanel">
+        <div class="ph">
+          <div class="pt"><div class="ptd" style="background:var(--blue)"></div>7-Day Overview</div>
+          <div class="cleg">
+            <div class="cli"><div class="cld" style="background:#059669"></div>Income</div>
+            <div class="cli"><div class="cld" style="background:#dc2626"></div>Expense</div>
+          </div>
+        </div>
+        <div class="ci"><div class="bc" id="bchart"></div></div>
+      </div>
+
+      <!-- Transactions -->
+      <div class="panel">
+        <div class="ph">
+          <div class="pt"><div class="ptd" style="background:var(--green)"></div>Transactions</div>
+          <div class="pbadge" id="tbadge">0 entries</div>
+        </div>
+        <div class="ftabs">
+          <button class="ftab faa active" onclick="setF('all',this)">All</button>
+          <button class="ftab fai" onclick="setF('income',this)">Income</button>
+          <button class="ftab fae" onclick="setF('expense',this)">Expense</button>
+        </div>
+        <div class="tlist" id="tlist"></div>
+      </div>
+
+      <!-- Report -->
+      <div class="panel">
+        <div class="ph">
+          <div class="pt"><div class="ptd" style="background:var(--amber)"></div>Daily Summary Report</div>
+        </div>
+        <table class="rtbl">
+          <thead><tr><th>Category</th><th>Count</th><th style="text-align:right">Amount</th></tr></thead>
+          <tbody id="rbody"></tbody>
+          <tfoot id="rfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- ADD FORM -->
+    <div id="addcol">
+      <div class="panel">
+        <div class="ph">
+          <div class="pt"><div class="ptd" style="background:#7b2fff"></div>Add Transaction</div>
+        </div>
+        <div class="aform">
+          <div class="fsect">Transaction Type</div>
+          <div class="ttog">
+            <button class="tbtn ai" id="bti" onclick="setT('income')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              Income
+            </button>
+            <button class="tbtn" id="bte" onclick="setT('expense')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+              Expense
+            </button>
+          </div>
+
+          <div class="fsect">Amount</div>
+          <div class="field">
+            <label>Amount (৳ Taka)</label>
+            <input type="number" id="fa" class="afield" placeholder="0.00" min="0" step="0.01" oninput="updAmt()"/>
+            <div class="adis" id="adis"></div>
+          </div>
+
+          <div class="fsect">Details</div>
+          <div class="field">
+            <label>Description *</label>
+            <input type="text" id="fd" placeholder="e.g. Shirt sale, Supplier payment…" maxlength="80"/>
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select id="fc"></select>
+            <div class="cpicks" id="cpicks"></div>
+          </div>
+          <div class="field">
+            <label>Note (optional)</label>
+            <textarea id="fn" placeholder="Extra details…"></textarea>
+          </div>
+          <div class="field">
+            <label>Time</label>
+            <input type="time" id="ft"/>
+          </div>
+
+          <button class="sbtn si" id="sbtn" onclick="addTxn()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            Add Income
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+var CT='income', CF='all';
+var vd=new Date(); vd.setHours(0,0,0,0);
+var SK='hasan_cash_v2';
+
+function ld(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
+function sd(d){localStorage.setItem(SK,JSON.stringify(d))}
+function dk(d){return d.toISOString().slice(0,10)}
+function gt(){var n=new Date();return String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')}
+function fk(n){return '৳'+n.toLocaleString('en-BD',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+var INCC=['Sales','Service','Rent Received','Other Income'];
+var EXPC=['Purchase','Rent','Salary','Utility','Transport','Maintenance','Tax','Miscellaneous'];
+var CATL={Sales:'💼 Sales',Service:'🔧 Service','Rent Received':'🏠 Rent Received','Other Income':'💡 Other Income',Purchase:'🛒 Purchase',Rent:'🏢 Rent Paid',Salary:'👷 Salary',Utility:'💡 Utilities',Transport:'🚗 Transport',Maintenance:'🔨 Maintenance',Tax:'📋 Tax / Fee',Miscellaneous:'📦 Misc'};
+function cl(c){return CATL[c]||c}
+
+function updCats(){
+  var sel=document.getElementById('fc'), pk=document.getElementById('cpicks');
+  var cats=CT==='income'?INCC:EXPC;
+  sel.innerHTML='';
+  cats.forEach(function(c,i){var o=document.createElement('option');o.value=c;o.textContent=cl(c);if(i===0)o.selected=true;sel.appendChild(o);});
+  pk.innerHTML='';
+  cats.forEach(function(c){var b=document.createElement('button');b.className='cpick';b.textContent=cl(c);b.onclick=function(){sel.value=c;};pk.appendChild(b);});
+}
+
+function setT(t){
+  CT=t;
+  document.getElementById('bti').className='tbtn'+(t==='income'?' ai':'');
+  document.getElementById('bte').className='tbtn'+(t==='expense'?' ae':'');
+  var sb=document.getElementById('sbtn');
+  sb.className='sbtn '+(t==='income'?'si':'se');
+  sb.innerHTML=t==='income'
+    ?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg> Add Income'
+    :'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg> Add Expense';
+  updCats();
+}
+
+function updAmt(){
+  var v=parseFloat(document.getElementById('fa').value)||0;
+  document.getElementById('adis').textContent=v>0?'= '+fk(v):'';
+}
+
+function addTxn(){
+  var amt=parseFloat(document.getElementById('fa').value);
+  var desc=document.getElementById('fd').value.trim();
+  var cat=document.getElementById('fc').value;
+  var note=document.getElementById('fn').value.trim();
+  var time=document.getElementById('ft').value||gt();
+  if(!amt||amt<=0){toast('Please enter a valid amount','r');return;}
+  if(!desc){toast('Please enter a description','r');return;}
+  var data=ld(); var key=dk(vd);
+  if(!data[key])data[key]=[];
+  data[key].push({id:Date.now(),type:CT,amount:amt,desc:desc,cat:cat,note:note,time:time});
+  sd(data);
+  document.getElementById('fa').value='';
+  document.getElementById('fd').value='';
+  document.getElementById('fn').value='';
+  document.getElementById('adis').textContent='';
+  render();
+  toast(CT==='income'?'Income added!':'Expense added!','g');
+}
+
+function delTxn(id){
+  if(!confirm('Delete this transaction?'))return;
+  var data=ld(); var key=dk(vd);
+  if(data[key])data[key]=data[key].filter(function(t){return t.id!==id;});
+  sd(data); render(); toast('Deleted','r');
+}
+
+function setF(f,btn){
+  CF=f;
+  document.querySelectorAll('.ftab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  renderList();
+}
+
+function chDay(d){vd.setDate(vd.getDate()+d);render();}
+
+function updLabel(){
+  var today=new Date();today.setHours(0,0,0,0);
+  var diff=Math.round((vd-today)/86400000);
+  var label=diff===0?'Today':diff===-1?'Yesterday':diff===1?'Tomorrow':vd.toLocaleDateString('en-BD',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('dl').textContent=label;
+  document.getElementById('dbadge').textContent=vd.toLocaleDateString('en-BD',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
+}
+
+function render(){
+  var data=ld(); var key=dk(vd);
+  var txns=(data[key]||[]).sort(function(a,b){return b.id-a.id;});
+  var inc=txns.filter(function(t){return t.type==='income';});
+  var exp=txns.filter(function(t){return t.type==='expense';});
+  var ti=inc.reduce(function(s,t){return s+t.amount;},0);
+  var te=exp.reduce(function(s,t){return s+t.amount;},0);
+  var pr=ti-te;
+  document.getElementById('TI').textContent=fk(ti);
+  document.getElementById('TE').textContent=fk(te);
+  document.getElementById('NP').textContent=fk(pr);
+  document.getElementById('CB').textContent=fk(Math.max(pr,0));
+  document.getElementById('IC').textContent=inc.length+' transaction'+(inc.length!==1?'s':'');
+  document.getElementById('EC').textContent=exp.length+' transaction'+(exp.length!==1?'s':'');
+  document.getElementById('PN').textContent=pr>=0?'Profitable day 🎉':'Loss today ⚠️';
+  document.getElementById('BN').textContent=pr>=0?'Surplus remaining':'Negative balance';
+  renderList();
+  renderReport(txns,ti,te,pr);
+  renderChart(data);
+  updLabel();
+}
+
+function renderList(){
+  var data=ld(); var key=dk(vd);
+  var txns=(data[key]||[]).sort(function(a,b){return b.id-a.id;});
+  var fl=CF==='income'?txns.filter(function(t){return t.type==='income';}):CF==='expense'?txns.filter(function(t){return t.type==='expense';}):txns;
+  var list=document.getElementById('tlist');
+  document.getElementById('tbadge').textContent=txns.length+' entr'+(txns.length!==1?'ies':'y');
+  if(!fl.length){
+    list.innerHTML='<div class="te"><div class="ei">'+(CF==='income'?'📈':CF==='expense'?'📉':'📋')+'</div>No '+(CF==='all'?'':CF+' ')+'transactions yet.</div>';
+    return;
+  }
+  list.innerHTML=fl.map(function(t){
+    return '<div class="ti"><div class="td '+(t.type==='income'?'ii':'ie')+'">'+(t.type==='income'?'⬆️':'⬇️')+'</div><div class="tinfo"><div class="tname">'+esc(t.desc)+'</div><div class="tmeta"><span class="tcat '+(t.type==='income'?'ci':'ce')+'">'+esc(t.cat)+'</span><span>'+esc(t.time||'')+'</span>'+(t.note?'<span>· '+esc(t.note)+'</span>':'')+'</div></div><div class="tam '+(t.type==='income'?'ai':'ae')+'">'+(t.type==='income'?'+':'-')+fk(t.amount)+'</div><button class="tdel" onclick="delTxn('+t.id+')" title="Delete"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>';
+  }).join('');
+}
+
+function renderReport(txns,ti,te,pr){
+  var rb=document.getElementById('rbody'),rf=document.getElementById('rfoot');
+  var groups={};
+  txns.forEach(function(t){if(!groups[t.cat])groups[t.cat]={type:t.type,count:0,total:0};groups[t.cat].count++;groups[t.cat].total+=t.amount;});
+  var keys=Object.keys(groups);
+  if(!keys.length){rb.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--muted2);padding:20px;">No data for this day.</td></tr>';rf.innerHTML='';return;}
+  rb.innerHTML=keys.map(function(cat){var g=groups[cat];return '<tr><td>'+cl(cat)+'</td><td style="color:var(--muted)">'+g.count+' entr'+(g.count!==1?'ies':'y')+'</td><td class="'+(g.type==='income'?'rgi':'rge')+'">'+(g.type==='income'?'+':'-')+fk(g.total)+'</td></tr>';}).join('');
+  rf.innerHTML='<tr><td colspan="2">Total Income</td><td class="rgi">+'+fk(ti)+'</td></tr><tr><td colspan="2">Total Expense</td><td class="rge">-'+fk(te)+'</td></tr><tr><td colspan="2" style="color:var(--text);font-size:14px;">Net Profit / Loss</td><td class="'+(pr>=0?'rgp':'rge')+'" style="font-size:15px;">'+(pr>=0?'+':'')+fk(pr)+'</td></tr>';
+}
+
+function renderChart(data){
+  var chart=document.getElementById('bchart');
+  var days=[];
+  for(var i=6;i>=0;i--){var d=new Date(vd);d.setDate(d.getDate()-i);var key=dk(d);var txns=data[key]||[];var inc=txns.filter(function(t){return t.type==='income';}).reduce(function(s,t){return s+t.amount;},0);var exp=txns.filter(function(t){return t.type==='expense';}).reduce(function(s,t){return s+t.amount;},0);days.push({label:d.toLocaleDateString('en-BD',{weekday:'short'}).slice(0,3),inc:inc,exp:exp,key:key});}
+  var mx=Math.max.apply(null,days.map(function(d){return Math.max(d.inc,d.exp);}));mx=mx||1;
+  chart.innerHTML=days.map(function(d){
+    var ih=Math.max((d.inc/mx)*100,d.inc>0?4:0);
+    var eh=Math.max((d.exp/mx)*100,d.exp>0?4:0);
+    var cur=d.key===dk(vd);
+    return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;"><div style="width:100%;display:flex;gap:3px;align-items:flex-end;height:100px;"><div class="bar ib" style="height:'+ih+'px;" title="Income: '+fk(d.inc)+'"></div><div class="bar eb" style="height:'+eh+'px;" title="Expense: '+fk(d.exp)+'"></div></div><div class="bl" style="'+(cur?'color:var(--text);font-weight:700;':'')+'">'+d.label+'</div></div>';
+  }).join('');
+}
+
+function toast(msg,type){
+  var t=document.getElementById('toast');t.textContent=msg;t.className='show '+type;
+  clearTimeout(t._t);t._t=setTimeout(function(){t.className='';},2500);
+}
+
+// INIT
+document.getElementById('ft').value=gt();
+updCats();
+render();
+</script>
+</body>
+</html>
